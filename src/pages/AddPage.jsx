@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TinyMCECustom from '../components/TinyMCECustom';
+import { DEVB_ROUTE } from '../routes/Routes';
 
 const AddPage = () => {
     const [title, setTitle] = useState('');
@@ -23,7 +24,7 @@ const AddPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/api/articles', {
+            const response = await axios.post(DEVB_ROUTE + '/api/articles', {
                 title,
                 slug,
                 content,

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Editor } from '@tinymce/tinymce-react';
 import { getPassword } from '../utils/password';
 import PasswordPrompt from './PasswordPrompt';
+import { DEVB_ROUTE } from '../routes/Routes';
 
 const EditPage = () => {
   const { slug } = useParams();
@@ -18,7 +19,7 @@ const EditPage = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/articles/${slug}`);
+        const response = await axios.get(DEVB_ROUTE + `/api/articles/${slug}`);
         const { title, content, categoryId } = response.data;
         setTitle(title);
         setContent(content);
@@ -30,7 +31,7 @@ const EditPage = () => {
 
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/categories');
+        const response = await axios.get(DEVB_ROUTE + '/api/categories');
         setCategories(response.data);
       } catch (err) {
         console.error('Erreur lors de la récupération des catégories:', err);
@@ -44,7 +45,7 @@ const EditPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/articles/${slug}`, {
+      await axios.put(DEVB_ROUTE + `/api/articles/${slug}`, {
         title,
         content,
         categoryId

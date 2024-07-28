@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { setPassword } from '../utils/password';
+import { DEVB_ROUTE } from '../routes/Routes';
 
 const PasswordPrompt = ({ onPasswordSet }) => {
   const [password, setPasswordInput] = useState('');
@@ -9,7 +10,7 @@ const PasswordPrompt = ({ onPasswordSet }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/check-password', { password });
+      const response = await axios.post(DEVB_ROUTE + '/api/check-password', { password });
       if (response.data.success) {
         setPassword(password);
         onPasswordSet(password);

@@ -6,6 +6,7 @@ import PasswordPrompt from './PasswordPrompt';
 import { getPassword } from '../utils/password';
 import { addFavorite, removeFavorite, isFavorite } from '../utils/favorites';
 import { FaEdit, FaStar } from "react-icons/fa";
+import { DEVB_ROUTE } from '../routes/Routes';
 
 const HomePage = () => {
     const { slug } = useParams();
@@ -22,7 +23,7 @@ const HomePage = () => {
         if (slug) {
             const fetchArticle = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/articles/${slug}`);
+                    const response = await axios.get(DEVB_ROUTE + `/api/articles/${slug}`);
                     setContent(response.data);
                     setIsFav(isFavorite(response.data.id));
                 } catch (err) {
@@ -78,7 +79,7 @@ const HomePage = () => {
 
         if (query.length > 0) {
             try {
-                const response = await axios.get(`http://localhost:5000/api/search?q=${query}`);
+                const response = await axios.get(DEVB_ROUTE + `/api/search?q=${query}`);
                 setSearchResults(response.data);
             } catch (err) {
                 console.error('Erreur lors de la recherche:', err);

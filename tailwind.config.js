@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'forest': "url('src/assets/bg.webp')",
-        'night-forest': "url('src/assets/bg2.webp')",
+        'forest': "url('/bg.webp')",
+        'night-forest': "url('/bg2.webp')",
       },
       colors: {
         primary: '#4169E1', // Bleu Royal
