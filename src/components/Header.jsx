@@ -37,10 +37,21 @@ const Header = () => {
         }
     };
 
+    const handleAddCategory = () => {
+        if (getPassword()) {
+            navigate('/add-category');
+        } else {
+            setAction('add-category');
+            setShowPasswordPrompt(true);
+        }
+    };
+
     const onPasswordSet = () => {
         setShowPasswordPrompt(false);
         if (action === 'add') {
             navigate('/add-page');
+        } else if (action === 'add-category') {
+            navigate('/add-category');
         }
     };
 
@@ -77,8 +88,11 @@ const Header = () => {
                         ))}
                     </div>
                 </div>
-                <button onClick={handleAddPage} className="flex justify-center items-center bg-green-500/80 hover:bg-green-500 text-white font-bold p-4 rounded">
+                <button onClick={handleAddPage} className="flex justify-center items-center bg-green-500/80 hover:bg-green-500 text-white font-bold p-4 rounded mb-2">
                     Page <FaPlus className="ml-1"/>
+                </button>
+                <button onClick={handleAddCategory} className="flex justify-center items-center bg-blue-500/80 hover:bg-blue-500 text-white font-bold p-4 rounded">
+                    Caté <FaPlus className="ml-1"/>
                 </button>
             </div>
             {showPasswordPrompt && (

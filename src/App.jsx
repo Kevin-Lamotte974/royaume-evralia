@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import AddPage from './pages/AddPage';
 import EditPage from './pages/EditPage';
+import AddCategory from './pages/AddCategory';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
             <Route path="/" element={<Navigate to="/accueil" />} />
             <Route path="/add-page" element={<AddPage />} />
             <Route path="/edit/:slug" element={<EditPage />} />
+            <Route path="/add-category" element={<AddCategory />} /> 
             <Route path="/:slug" element={<HomePage />} />
           </Routes>
         </main>

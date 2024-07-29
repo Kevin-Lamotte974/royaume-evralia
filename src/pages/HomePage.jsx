@@ -25,6 +25,7 @@ const HomePage = () => {
                 try {
                     const response = await axios.get(DEVB_ROUTE + `/api/articles/${slug}`);
                     setContent(response.data);
+                    console.log(response.data);
                     setIsFav(isFavorite(response.data.id));
                 } catch (err) {
                     setError('Article non trouvé');
@@ -140,7 +141,7 @@ const HomePage = () => {
                             </button>
                         </div>
                         <h1 className="text-4xl font-bold mb-4">{content?.title}</h1>
-                        <p className="text-xl mb-2">Category: {content?.category?.name}</p>
+                        <p className="text-xl mb-2">Category: {content?.categoryName}</p>
                         <div className="custom-content" dangerouslySetInnerHTML={{ __html: content?.content }} />
                     </div>
                 </div>
