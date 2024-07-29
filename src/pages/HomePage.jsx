@@ -73,6 +73,10 @@ const HomePage = () => {
         }
     };
 
+    const onClosePasswordPrompt = () => {
+        setShowPasswordPrompt(false);
+    };
+
     const handleSearch = async (e) => {
         const query = e.target.value;
         setSearchQuery(query);
@@ -88,10 +92,6 @@ const HomePage = () => {
             setSearchResults([]);
         }
     };
-
-    if (showPasswordPrompt) {
-        return <PasswordPrompt onPasswordSet={onPasswordSet} />;
-    }
 
     if (error) {
         return <Error404 />;
@@ -144,6 +144,10 @@ const HomePage = () => {
                         <div className="custom-content" dangerouslySetInnerHTML={{ __html: content?.content }} />
                     </div>
                 </div>
+            )}
+
+            {showPasswordPrompt && (
+                <PasswordPrompt onPasswordSet={onPasswordSet} onClose={onClosePasswordPrompt} />
             )}
         </>
     );

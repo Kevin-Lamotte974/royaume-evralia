@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
 import { getFavorites } from '../utils/favorites';
+import PasswordPrompt from '../pages/PasswordPrompt';
+import { getPassword } from '../utils/password';
 
 const Header = () => {
     const navigate = useNavigate();
     const [favorites, setFavorites] = useState([]);
+    const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+    const [action, setAction] = useState('');
 
     useEffect(() => {
         const updateFavorites = () => {
@@ -25,7 +29,23 @@ const Header = () => {
     }, []);
 
     const handleAddPage = () => {
-        navigate('/add-page');
+        if (getPassword()) {
+            navigate('/add-page');
+        } else {
+            setAction('add');
+            setShowPasswordPrompt(true);
+        }
+    };
+
+    const onPasswordSet = () => {
+        setShowPasswordPrompt(false);
+        if (action === 'add') {
+            navigate('/add-page');
+        }
+    };
+
+    const onClosePasswordPrompt = () => {
+        setShowPasswordPrompt(false);
     };
 
     const getInitials = (title) => {
@@ -61,6 +81,9 @@ const Header = () => {
                     Page <FaPlus className="ml-1"/>
                 </button>
             </div>
+            {showPasswordPrompt && (
+                <PasswordPrompt onPasswordSet={onPasswordSet} onClose={onClosePasswordPrompt} />
+            )}
         </header>
     );
 };
