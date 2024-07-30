@@ -8,7 +8,9 @@ export default {
     extend: {
       backgroundImage: {
         'forest': "url('/bg.webp')",
-        'night-forest': "url('/bg2.webp')",
+        'neutre': "url('/bg2.webp')",
+        'vie': "url('/bg3.webp')",
+        'néant': "url('/bg4.webp')",
       },
       colors: {
         primary: '#4169E1', // Bleu Royal

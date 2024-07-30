@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import Header from './components/Header';
@@ -10,8 +10,21 @@ import AllArticlesPage from './pages/AllArticlesPage';
 import AllCategoriesPage from './pages/AllCategoriesPage';
 
 const App = () => {
+  const [trait, setTrait] = useState('Neutre');
+
+  const getBackgroundClass = (trait) => {
+    switch (trait) {
+      case 'Vie':
+        return 'bg-vie';
+      case 'Néant':
+        return 'bg-néant';
+      default:
+        return 'bg-neutre';
+    }
+  };
+
   return (
-    <div className='flex w-screen h-screen bg-night-forest bg-center bg-no-repeat bg-cover z-0'>
+    <div className={`flex w-screen h-screen ${getBackgroundClass(trait)} bg-center bg-no-repeat bg-cover z-0`}>
       <BrowserRouter>
         <Header />
         <main className="flex flex-col w-full">
@@ -22,7 +35,7 @@ const App = () => {
             <Route path="/add-page" element={<AddPage />} />
             <Route path="/edit/:slug" element={<EditPage />} />
             <Route path="/add-category" element={<AddCategory />} /> 
-            <Route path="/:slug" element={<HomePage />} />
+            <Route path="/:slug" element={<HomePage setTrait={setTrait} />} />
           </Routes>
         </main>
         <Footer />

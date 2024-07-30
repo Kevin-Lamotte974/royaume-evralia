@@ -99,7 +99,7 @@ const Header = () => {
 
         if (query.length > 0) {
             try {
-                const response = await axios.get(DEVB_ROUTE + `/api/articles/search?q=${query}`);
+                const response = await axios.get(DEVB_ROUTE + `/api/articles/sb/search?q=${query}`);
                 setSearchResults(response.data);
             } catch (err) {
                 console.error('Erreur lors de la recherche:', err);
@@ -137,21 +137,21 @@ const Header = () => {
                     Caté <FaPlus className="ml-1"/>
                 </button>
             </div>
-            <div className={`fixed top-8 right-8 transition-transform duration-300 ${isSidebarOpen ? 'mr-64' : ''}`}>
-                <form className="relative">
+            <div className={`fixed top-8 right-8 z-40 transition-transform duration-300 ${isSidebarOpen ? 'mr-64' : ''}`}>
+                <form className="relative z-40">
                     <input
                         type="text"
                         value={searchQuery}
                         onChange={handleSearch}
                         placeholder="Chercher..."
-                        className="pl-4 pr-8 py-2 rounded-full text-black focus:outline-none"
+                        className="pl-4 pr-8 py-2 rounded-full bg-gray-900 text-secondary placeholder-white::placeholder focus:outline-none"
                     />
                     {searchResults.length > 0 && (
-                        <ul className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-auto z-10">
+                        <ul className="absolute left-0 right-0 bg-gray-900 border border-gray-800 text-secondary mt-1 rounded-md shadow-lg max-h-60 overflow-auto z-40">
                             {searchResults.map((result) => (
                                 <li
                                     key={result.id}
-                                    className="p-2 cursor-pointer hover:bg-gray-200"
+                                    className="p-2 cursor-pointer hover:bg-gray-800 z-40"
                                     onClick={() => navigate(`/${result.slug}`)}
                                 >
                                     <span className="font-bold">{result.title}</span>

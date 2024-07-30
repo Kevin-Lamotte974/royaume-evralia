@@ -8,6 +8,7 @@ const AddPage = () => {
     const [slug, setSlug] = useState('');
     const [content, setContent] = useState('');
     const [categoryId, setCategoryId] = useState('');
+    const [trait, setTrait] = useState('Neutre');
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -42,7 +43,8 @@ const AddPage = () => {
                 title,
                 slug,
                 content,
-                categoryId
+                categoryId,
+                trait
             }, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -96,23 +98,40 @@ const AddPage = () => {
                             />
                         </div>
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-white text-sm font-bold mb-2" htmlFor="category">
-                            Catégorie
-                        </label>
-                        <select
-                            id="category"
-                            value={categoryId}
-                            onChange={(e) => setCategoryId(e.target.value)}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
-                        >
-                            <option value="">Sélectionnez une catégorie</option>
-                            {categories.map(category => (
-                                <option key={category.id} value={category.id}>
-                                    {category.name}
-                                </option>
-                            ))}
-                        </select>
+                    <div className="flex w-full">
+                        <div className="mb-4 w-1/2">
+                            <label className="block text-white text-sm font-bold mb-2" htmlFor="category">
+                                Catégorie
+                            </label>
+                            <select
+                                id="category"
+                                value={categoryId}
+                                onChange={(e) => setCategoryId(e.target.value)}
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+                            >
+                                <option value="">Sélectionnez une catégorie</option>
+                                {categories.map(category => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="mb-4 w-1/2 ml-2">
+                            <label className="block text-white text-sm font-bold mb-2" htmlFor="trait">
+                                Trait
+                            </label>
+                            <select
+                                id="trait"
+                                value={trait}
+                                onChange={(e) => setTrait(e.target.value)}
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+                            >
+                                <option value="Neutre">Neutre</option>
+                                <option value="Vie">Vie</option>
+                                <option value="Néant">Néant</option>
+                            </select>
+                        </div>
                     </div>
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">
                         Ajouter la Page
