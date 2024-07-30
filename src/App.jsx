@@ -8,6 +8,7 @@ import EditPage from './pages/EditPage';
 import AddCategory from './pages/AddCategory';
 import AllArticlesPage from './pages/AllArticlesPage';
 import AllCategoriesPage from './pages/AllCategoriesPage';
+import CategoryPage from './pages/CategoryPage';
 
 const App = () => {
   const [trait, setTrait] = useState('Neutre');
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="/add-page" element={<AddPage />} />
             <Route path="/edit/:slug" element={<EditPage />} />
             <Route path="/add-category" element={<AddCategory />} /> 
+            <Route path="/categories/:id" element={<CategoryPage />} />
             <Route path="/:slug" element={<HomePage setTrait={setTrait} />} />
           </Routes>
         </main>
