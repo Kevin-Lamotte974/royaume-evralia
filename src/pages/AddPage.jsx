@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TinyMCECustom from '../components/TinyMCECustom';
 import { DEVB_ROUTE } from '../routes/Routes';
+import { useNavigate } from 'react-router-dom';
 
 const AddPage = () => {
     const [title, setTitle] = useState('');
@@ -10,6 +11,7 @@ const AddPage = () => {
     const [categoryId, setCategoryId] = useState('');
     const [trait, setTrait] = useState('Neutre');
     const [categories, setCategories] = useState([]);
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -51,6 +53,7 @@ const AddPage = () => {
                 }
             });
             alert('Page ajoutée avec succès !');
+            navigate(`/${slug}`, { state: { updated: true } });
         } catch (error) {
             console.error('Erreur lors de l\'ajout de la page:', error);
         }
