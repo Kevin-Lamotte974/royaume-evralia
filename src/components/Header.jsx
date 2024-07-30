@@ -136,12 +136,6 @@ const Header = () => {
                         ))}
                     </div>
                 </div>
-                <button onClick={handleAddPage} className="flex justify-center items-center bg-green-500/80 hover:bg-green-500 text-white font-bold p-4 rounded mb-2">
-                    Page <FaPlus className="ml-1"/>
-                </button>
-                <button onClick={handleAddCategory} className="flex justify-center items-center bg-blue-500/80 hover:bg-blue-500 text-white font-bold p-4 rounded">
-                    Caté <FaPlus className="ml-1"/>
-                </button>
             </div>
             <div className={`fixed top-8 right-8 z-40 transition-transform duration-300 ${isSidebarOpen ? 'mr-64' : ''}`}>
                 <form className="relative z-40">
