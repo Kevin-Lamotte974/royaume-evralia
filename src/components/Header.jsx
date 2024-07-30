@@ -109,6 +109,12 @@ const Header = () => {
         }
     };
 
+    const handleSearchResultClick = (slug) => {
+        setSearchQuery(''); // Clear search query
+        setSearchResults([]); // Clear search results
+        navigate(`/${slug}`);
+    };
+
     return (
         <header className="bg-primary text-secondary w-24 h-screen relative">
             <div className="h-full w-full container mx-auto flex flex-col items-center">
@@ -152,7 +158,7 @@ const Header = () => {
                                 <li
                                     key={result.id}
                                     className="p-2 cursor-pointer hover:bg-gray-800 z-40"
-                                    onClick={() => navigate(`/${result.slug}`)}
+                                    onClick={() => handleSearchResultClick(result.slug)}
                                 >
                                     <span className="font-bold">{result.title}</span>
                                     <p>{result.content.substring(0, 50)}...</p>
