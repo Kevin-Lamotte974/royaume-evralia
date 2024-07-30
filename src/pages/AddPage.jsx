@@ -8,6 +8,20 @@ const AddPage = () => {
     const [slug, setSlug] = useState('');
     const [content, setContent] = useState('');
     const [categoryId, setCategoryId] = useState('');
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get(DEVB_ROUTE + '/api/categories');
+                setCategories(response.data);
+            } catch (error) {
+                console.error('Erreur lors de la récupération des catégories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
     useEffect(() => {
         const generateSlug = (title) => {
@@ -92,8 +106,12 @@ const AddPage = () => {
                             onChange={(e) => setCategoryId(e.target.value)}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
                         >
-                            <option value="1">Catégorie 1</option>
-                            <option value="2">Catégorie 2</option>
+                            <option value="">Sélectionnez une catégorie</option>
+                            {categories.map(category => (
+                                <option key={category.id} value={category.id}>
+                                    {category.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">

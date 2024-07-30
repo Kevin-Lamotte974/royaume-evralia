@@ -6,6 +6,8 @@ import Footer from './components/Footer';
 import AddPage from './pages/AddPage';
 import EditPage from './pages/EditPage';
 import AddCategory from './pages/AddCategory';
+import AllArticlesPage from './pages/AllArticlesPage';
+import AllCategoriesPage from './pages/AllCategoriesPage';
 
 const App = () => {
   return (
@@ -15,6 +17,8 @@ const App = () => {
         <main className="flex flex-col w-full">
           <Routes>
             <Route path="/" element={<Navigate to="/accueil" />} />
+            <Route path="/articles" element={<AllArticlesPage />} />
+            <Route path="/categories" element={<AllCategoriesPage />} />
             <Route path="/add-page" element={<AddPage />} />
             <Route path="/edit/:slug" element={<EditPage />} />
             <Route path="/add-category" element={<AddCategory />} /> 

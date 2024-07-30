@@ -84,7 +84,7 @@ const HomePage = () => {
 
         if (query.length > 0) {
             try {
-                const response = await axios.get(DEVB_ROUTE + `/api/search?q=${query}`);
+                const response = await axios.get(DEVB_ROUTE + `/api/articles/sb/search?q=${query}`);
                 setSearchResults(response.data);
             } catch (err) {
                 console.error('Erreur lors de la recherche:', err);
