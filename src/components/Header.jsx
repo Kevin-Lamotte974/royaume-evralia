@@ -180,12 +180,16 @@ const Header = () => {
                             <Link to="/categories" className="text-white">Toutes les catégories</Link>
                         </li>
                         <li className="mb-2">
-                            <Link to="/add-page" className="text-white">Ajouter une page</Link>
+                            <button onClick={handleAddPage} className=" text-white">
+                                Ajouter un article
+                            </button>
                         </li>
                         <li className="mb-2">
-                            <Link to="/add-category" className="text-white">Ajouter une catégorie</Link>
+                            <button onClick={handleAddCategory} className="text-white">
+                                Ajouter une catégorie
+                            </button>
                         </li>
-                    </ul>                    
+                    </ul>
                 </div>
             </div>
         </header>

@@ -18,6 +18,7 @@ const HomePage = ({ setTrait }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isFav, setIsFav] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deletePassword, setDeletePassword] = useState(''); // State for password input
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -89,6 +90,10 @@ const HomePage = ({ setTrait }) => {
     };
 
     const confirmDelete = async () => {
+        if (deletePassword !== getPassword()) {
+            setError('Mot de passe incorrect');
+            return;
+        }
         try {
             await axios.delete(DEVB_ROUTE + `/api/articles/${slug}`);
             setShowDeleteModal(false);
@@ -134,7 +139,6 @@ const HomePage = ({ setTrait }) => {
 
     return (
         <>
-
             {slug && (
                 <div className="flex flex-col h-full items-center justify-center p-4">
                     <div className="relative bg-gray-900 w-3/4 h-4/5 p-4 rounded-lg text-secondary z-30">
@@ -174,6 +178,14 @@ const HomePage = ({ setTrait }) => {
                     >
                         <h2 className="text-2xl mb-4">Confirmer la suppression</h2>
                         <p className="mb-4">Êtes-vous sûr de vouloir supprimer cet article ?</p>
+                        <input
+                            type="password"
+                            placeholder="Entrez le mot de passe"
+                            value={deletePassword}
+                            onChange={(e) => setDeletePassword(e.target.value)}
+                            className="mb-4 p-2 rounded bg-gray-900 text-white"
+                        />
+                        {error && <p className="text-red-500">{error}</p>}
                         <div className="space-x-4">
                             <button onClick={confirmDelete} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                 Oui, supprimer
@@ -185,7 +197,6 @@ const HomePage = ({ setTrait }) => {
                     </div>
                 </div>
             )}
-
         </>
     );
 };
