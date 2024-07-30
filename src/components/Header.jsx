@@ -119,7 +119,7 @@ const Header = () => {
         <header className="bg-primary text-secondary w-24 h-screen relative">
             <div className="h-full w-full container mx-auto flex flex-col items-center">
                 <div className="flex flex-col items-center text-2xl font-bold mb-4 w-full">
-                    <Link className="mt-6" to="/accueil">LRD</Link>
+                    <Link className="mt-6" to="/accueil"><img src='/logo.png'/></Link>
                     <hr className="my-4 w-2/3 border-secondary" />
                 </div>
                 <div className="flex-grow overflow-y-auto w-full">
