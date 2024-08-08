@@ -9,6 +9,10 @@ import AddCategory from './pages/AddCategory';
 import AllArticlesPage from './pages/AllArticlesPage';
 import AllCategoriesPage from './pages/AllCategoriesPage';
 import CategoryPage from './pages/CategoryPage';
+import MapChart from './pages/MapChart';
+import 'leaflet/dist/leaflet.css';
+import KeyboardListener from './utils/KeyboardListener';
+
 
 const App = () => {
   const [trait, setTrait] = useState('Neutre');
@@ -28,9 +32,11 @@ const App = () => {
     <div className={`flex w-screen h-screen ${getBackgroundClass(trait)} bg-center bg-no-repeat bg-cover z-0`}>
       <BrowserRouter>
         <Header />
+        <KeyboardListener/>
         <main className="flex flex-col w-full">
           <Routes>
             <Route path="/" element={<Navigate to="/accueil" />} />
+            <Route path="/map" element={<MapChart />} />
             <Route path="/articles" element={<AllArticlesPage />} />
             <Route path="/categories" element={<AllCategoriesPage />} />
             <Route path="/add-page" element={<AddPage />} />

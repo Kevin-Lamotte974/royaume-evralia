@@ -135,6 +135,7 @@ const Header = () => {
                             </Link>
                         ))}
                     </div>
+                    <Link className="absolute bottom-0 mt-6" to="/map"><img src='/map.png'/></Link>
                 </div>
             </div>
             <div className={`fixed top-8 right-8 z-40 transition-transform duration-300 ${isSidebarOpen ? 'mr-64' : ''}`}>
