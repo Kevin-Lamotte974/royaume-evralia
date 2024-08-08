@@ -32,7 +32,7 @@ const App = () => {
     <div className={`flex w-screen h-screen ${getBackgroundClass(trait)} bg-center bg-no-repeat bg-cover z-0`}>
       <BrowserRouter>
         <Header />
-        <KeyboardListener/>
+        {/* <KeyboardListener/> */}
         <main className="flex flex-col w-full">
           <Routes>
             <Route path="/" element={<Navigate to="/accueil" />} />
