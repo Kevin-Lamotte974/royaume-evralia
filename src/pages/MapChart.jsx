@@ -68,7 +68,7 @@ const MapChart = () => {
           zoomControl={true}
         >
           <TileLayer
-            url="https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=c4T1cTXKzYZ4gBDiZcvW"
+            url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=c4T1cTXKzYZ4gBDiZcvW"
             attribution='&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           {geoData &&
