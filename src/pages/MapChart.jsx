@@ -28,12 +28,12 @@ const MapChart = () => {
       });
   }, []);
 
-  const handlePolygonClick = (race) => {
-    navigate(`/${race.toLowerCase()}`);
+  const handlePolygonClick = (cours) => {
+    navigate(`/${cours.toLowerCase()}`);
   };
 
-  const getColorByRace = (race) => {
-    switch (race.toLowerCase()) {
+  const getColorByCours = (cours) => {
+    switch (cours.toLowerCase()) {
       case 'nain':
         return 'gray';
       case 'orcs':
@@ -75,28 +75,28 @@ const MapChart = () => {
             geoData.features.map((feature, i) => {
               if (feature.geometry.type === "Polygon") {
                 const coordinates = feature.geometry.coordinates[0].map(coord => [coord[1], coord[0]]);
-                const color = getColorByRace(feature.properties.race);
+                const color = getColorByCours(feature.properties.cours);
                 return (
                   <Polygon
                     key={i}
                     positions={coordinates}
                     pathOptions={{ color: color }}
                     eventHandlers={{
-                      click: () => handlePolygonClick(feature.properties.race),
+                      click: () => handlePolygonClick(feature.properties.cours),
                     }}
                   >
                     <Popup>
                       <div>
                         <strong>{feature.properties.région}</strong>
                         <br />
-                        Race: {feature.properties.race}
+                        Cours: {feature.properties.cours}
                       </div>
                     </Popup>
                     <Tooltip>
                       <div>
                         <strong>{feature.properties.région}</strong>
                         <br />
-                        Race: {feature.properties.race}
+                        Cours: {feature.properties.cours}
                       </div>
                     </Tooltip>
                   </Polygon>
