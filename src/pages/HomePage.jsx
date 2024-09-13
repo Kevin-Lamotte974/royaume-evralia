@@ -141,7 +141,7 @@ const HomePage = ({ setTrait }) => {
         <>
             {slug && (
                 <div className="flex flex-col h-full items-center justify-center p-4">
-                    <div className="relative bg-gray-900 w-3/4 h-4/5 p-4 rounded-lg text-secondary z-30">
+                    <div className="flex flex-col relative bg-gray-900 w-3/4 h-4/5 p-4 rounded-lg text-secondary z-30">
                         <div className="absolute right-2 top-2 space-x-2">
                             <button onClick={handleDeletePage} className="bg-red-500 hover:bg-red-700 text-white font-bold p-4 rounded">
                                 <FaTrash />
@@ -158,7 +158,7 @@ const HomePage = ({ setTrait }) => {
                         </div>
                         <h1 className="text-4xl font-bold mb-4">{content?.title}</h1>
                         <p className="text-xl mb-2">Category: {content?.categoryName}</p>
-                        <div className="custom-content" dangerouslySetInnerHTML={{ __html: content?.content }} />
+                        <div className="custom-content overflow-y-auto max-h-full" dangerouslySetInnerHTML={{ __html: content?.content }} />
                     </div>
                 </div>
             )}
