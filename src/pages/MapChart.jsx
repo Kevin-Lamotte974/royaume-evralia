@@ -34,14 +34,18 @@ const MapChart = () => {
 
   const getColorByCours = (cours) => {
     switch (cours.toLowerCase()) {
-      case 'nain':
+      case 'la cour des brumes':
         return 'gray';
-      case 'orcs':
+      case 'la cour du feu':
         return 'orange';
-      case 'elfes':
+      case 'la cour des forets':
         return 'green';
-      case 'vampires':
-        return 'red';
+      case 'la cour des glaces':
+        return 'white';
+      case 'la cour des mers':
+        return 'blue';
+      case 'la cour de l\'aube':
+        return 'yellow';
       default:
         return 'black';
     }
