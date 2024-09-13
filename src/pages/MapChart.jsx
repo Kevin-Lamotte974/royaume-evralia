@@ -29,8 +29,14 @@ const MapChart = () => {
   }, []);
 
   const handlePolygonClick = (cours) => {
-    navigate(`/${cours.toLowerCase()}`);
+    const formattedCours = cours
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]+/g, '-');
+  
+    navigate(`/${formattedCours}`);
   };
+  
 
   const getColorByCours = (cours) => {
     switch (cours.toLowerCase()) {
