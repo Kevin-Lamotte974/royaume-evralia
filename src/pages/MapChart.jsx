@@ -38,13 +38,13 @@ const MapChart = () => {
         return 'gray';
       case 'la cour du feu':
         return 'orange';
-      case 'la cour des forets':
+      case 'la cour des forêts':
         return 'green';
       case 'la cour des glaces':
         return 'white';
       case 'la cour des mers':
         return 'blue';
-      case 'la cour de l\'aube':
+      case "la cour de l'aube":
         return 'yellow';
       default:
         return 'black';

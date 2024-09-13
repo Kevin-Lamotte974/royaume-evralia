@@ -217,7 +217,7 @@
     {
       "type": "Feature",
       "properties": {
-        "cours": "La Cour de la Mer",
+        "cours": "La Cour des Mers",
         "région": "Méditéranée"
       },
       "geometry": {
@@ -287,8 +287,8 @@
     {
       "type": "Feature",
       "properties": {
-        "cours": "La Cour de L'Aube ",
-        "région": "Polande Roumanie Ukraine Biélorussie "
+        "cours": "La Cour de L'Aube",
+        "région": "Pologne Roumanie Ukraine Biélorussie "
       },
       "geometry": {
         "coordinates": [
