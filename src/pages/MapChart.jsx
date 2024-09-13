@@ -10,7 +10,7 @@ const MapChart = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('/evralia.geojson')
+    fetch('/evralia2.geojson')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
