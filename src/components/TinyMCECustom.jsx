@@ -4,7 +4,7 @@ import { Editor } from '@tinymce/tinymce-react';
 const TinyMCECustom = ({ data, onChange }) => {
   return (
     <Editor
-      apiKey='cqzzbepc5yiumkaoj4nkrg1xcw2bzni17zjjdwgcu3dr69px'
+      apiKey='3wjvc23cocva01y8nnpmtbr1vljbglxil1vsvwyqklptg0wa'
       value={data}
       init={{
         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
