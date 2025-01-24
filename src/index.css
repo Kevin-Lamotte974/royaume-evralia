@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --color-primary: #4169E1;
+    /* Bleu Royal */
+    --color-secondary: #FFD700;
+    /* Or */
+    --color-background: #FFFFF0;
+    /* Ivoire */
+    --color-text: #2F4F4F;
+    /* Gris Foncé */
+}
+
+body {
+    font-family: 'Cinzel', serif;
+}
+
+.custom-content a {
+    color: pink; /* Changez cette couleur selon vos préférences */
+    text-decoration: underline; /* Pour souligner les liens */
+  }
+
+.custom-content td {
+    border: #FFFFF0 1px solid;
+  }
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary);
+    border-radius: 10px;
+    border: 1px solid var(--color-background);
+}
