@@ -22,20 +22,19 @@ const HomePage = ({ setTrait }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (slug) {
-            const fetchArticle = async () => {
-                try {
-                    const response = await axios.get(DEVB_ROUTE + `/api/articles/${slug}`);
-                    setContent(response.data);
-                    setTrait(response.data.trait);
-                    setIsFav(isFavorite(response.data.id));
-                } catch (err) {
-                    setError('Article non trouvé');
-                }
-            };
+        const fetchArticle = async () => {
+            try {
+                const slug_to_fetch = slug || 'evralia';
+                const response = await axios.get(DEVB_ROUTE + `/api/articles/${slug_to_fetch}`);
+                setContent(response.data);
+                setTrait(response.data.trait);
+                setIsFav(isFavorite(response.data.id));
+            } catch (err) {
+                setError('Article non trouvé');
+            }
+        };
 
-            fetchArticle();
-        }
+        fetchArticle();
     }, [slug]);
 
     // Ajoutez un useEffect pour détecter les changements de l'état de navigation
