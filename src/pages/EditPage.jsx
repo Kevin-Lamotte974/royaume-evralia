@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { Editor } from '@tinymce/tinymce-react';
+import axiosInstance from '../utils/axiosConfig';
+import RichTextEditor from '../components/RichTextEditor';
 import { getPassword } from '../utils/password';
 import PasswordPrompt from './PasswordPrompt';
 import { DEVB_ROUTE } from '../routes/Routes';
@@ -17,25 +17,30 @@ const EditPage = () => {
   const [error, setError] = useState('');
   const [categories, setCategories] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(!!getPassword());
+  const [articleId, setArticleId] = useState(null); // Ajouter cette ligne
 
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await axios.get(DEVB_ROUTE + `/api/articles/${slug}`);
-        const { title, content, categoryId, trait } = response.data;
+        const response = await axiosInstance.get(`/api/articles/${slug}`);
+        console.log('Réponse article:', response.data); // Pour debug
+        const { id, title, content, categoryId, trait } = response.data;
+        setArticleId(id); // Sauvegarder l'ID
         setTitle(title);
         setContent(content);
-        setCategoryId(categoryId);
+        setCategoryId(categoryId?.toString() || '');
         setUrl(slug);
-        setTrait(trait);
+        setTrait(trait || 'Neutre');
       } catch (err) {
-        setError('Article non trouvé');
+        console.error('Erreur complète:', err);
+        console.error('Détails de l\'erreur:', err.response?.data);
+        setError(err.response?.data?.error || 'Article non trouvé');
       }
     };
 
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(DEVB_ROUTE + '/api/categories');
+        const response = await axiosInstance.get('/api/categories');
         setCategories(response.data);
       } catch (err) {
         console.error('Erreur lors de la récupération des catégories:', err);
@@ -49,12 +54,13 @@ const EditPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(DEVB_ROUTE + `/api/articles/${slug}`, {
+      // Utiliser articleId au lieu de slug pour la mise à jour
+      await axiosInstance.put(`/api/articles/${articleId}`, {
         title,
         content,
-        categoryId,
-        url,
-        trait
+        categoryId: parseInt(categoryId),
+        trait,
+        url
       });
       alert('Page mise à jour avec succès!');
       navigate(`/${url}`, { state: { updated: true } }); 
@@ -115,14 +121,9 @@ const EditPage = () => {
               Contenu
             </label>
             <div className="flex-grow">
-              <Editor
-                apiKey='cqzzbepc5yiumkaoj4nkrg1xcw2bzni17zjjdwgcu3dr69px'
+              <RichTextEditor
                 value={content}
-                init={{
-                  plugins: 'link image code',
-                  toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
-                }}
-                onEditorChange={(content, editor) => setContent(content)}
+                onChange={setContent}
               />
             </div>
           </div>

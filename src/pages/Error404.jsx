@@ -9,7 +9,7 @@ const Error404 = () => {
                 Page Not Found
             </div>
             <button className="mt-5">
-                <Link to="/accueil" className="relative inline-block text-sm font-medium text-secondary group focus:outline-none focus:ring">
+                <Link to="/" className="relative inline-block text-sm font-medium text-secondary group focus:outline-none focus:ring">
                     <span className="absolute inset-0 transition-transform translate-x-0.5 translate-y-0.5 bg-secondary group-hover:translate-y-0 group-hover:translate-x-0"></span>
                     <span className="relative block px-8 py-3 bg-primary border border-current">
                         Accueil

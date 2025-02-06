@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../utils/axiosConfig';
 import { DEVB_ROUTE } from '../../routes/Routes';
-import ReactQuill from 'react-quill';
+import RichTextEditor from '../../components/RichTextEditor';
 import 'react-quill/dist/quill.snow.css';
 
-const ArticleForm = ({ article, onSubmit }) => {
+const ArticleForm = ({ initialData, onSubmit }) => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -15,17 +15,17 @@ const ArticleForm = ({ article, onSubmit }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (article) {
-      console.log('Article reçu dans le formulaire:', article); // Pour debug
+    if (formData) {
+      console.log('Article reçu dans le formulaire:', formData); // Pour debug
       setFormData({
-        title: article.title || '',
-        content: article.content || '',
-        categoryId: article.categoryId || '',
-        trait: article.trait || 'Neutre'
+        title: formData.title || '',
+        content: formData.content || '',
+        categoryId: formData.categoryId || '',
+        trait: formData.trait || 'Neutre'
       });
     }
     fetchCategories();
-  }, [article]);
+  }, []);
 
   const fetchCategories = async () => {
     try {
@@ -99,20 +99,18 @@ const ArticleForm = ({ article, onSubmit }) => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700">Contenu</label>
-        <ReactQuill
+        <RichTextEditor
           value={formData.content}
           onChange={(content) => setFormData({ ...formData, content })}
-          className="mt-1 block w-full"
-          theme="snow"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
       >
-        {loading ? 'Enregistrement...' : article ? 'Modifier' : 'Créer'}
+        {'Créer'}
       </button>
     </form>
   );

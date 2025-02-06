@@ -21,17 +21,19 @@ const AllCategoriesPage = () => {
 
     return (
         <div className="flex flex-col h-full items-center justify-center p-4">
-            <div className="relative bg-gray-900 w-3/4 h-4/5 p-4 rounded-lg text-secondary">
-                <h1 className="text-3xl font-bold mb-4">Toutes les Catégories</h1>
-                <ul>
+            <div className="flex flex-col relative bg-gradient-to-r from-gray-900 via-blue-950 to-gray-700 w-3/4 h-4/5 p-6 rounded-xl shadow-2xl text-white z-30">
+                <h1 className="text-4xl font-extrabold text-center mb-8 text-secondary">Toutes les Catégories</h1>
+                <div className="flex flex-wrap justify-center gap-6">
                     {categories.map((category) => (
-                        <li key={category.id} className="mb-2">
-                            <Link to={`/categories/${category.id}`} className="text-pink-300 hover:underline">
+                        <div key={category.id} className="bg-white p-6 rounded-lg shadow-lg w-60 transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                            <Link to={`/categories/${category.id}`} className="block text-xl font-medium text-gray-800 hover:text-blue-600 text-center transition-colors duration-300">
                                 {category.name}
                             </Link>
-                        </li>
+                        </div>
                     ))}
-                </ul>
+                </div>
+
+
             </div>
         </div>
     );

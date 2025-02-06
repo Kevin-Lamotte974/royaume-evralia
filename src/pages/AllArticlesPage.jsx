@@ -8,7 +8,7 @@ const AllArticlesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [categories, setCategories] = useState([]); // État pour les catégories
     const [selectedCategory, setSelectedCategory] = useState(''); // État pour la catégorie sélectionnée
-    const articlesPerPage = 30; // Nombre d'articles par page
+    const articlesPerPage = 24; // Nombre d'articles par page
 
     useEffect(() => {
         const fetchArticles = async () => {
@@ -46,7 +46,7 @@ const AllArticlesPage = () => {
 
     return (
         <div className="flex flex-col h-full items-center justify-center p-4">
-            <div className="flex flex-col relative bg-gray-900 w-3/4 h-4/5 p-4 rounded-lg text-secondary">
+            <div className="flex flex-col relative bg-gradient-to-r from-gray-900 via-blue-950 to-gray-700 w-3/4 h-4/5 p-6 rounded-xl shadow-2xl text-white z-30">
                 <h1 className="text-3xl font-bold mb-4">Tous les Articles</h1>
 
                 {/* Sélection de la catégorie */}
@@ -73,12 +73,12 @@ const AllArticlesPage = () => {
                 {/* Liste des articles affichés verticalement */}
                 <ul className="flex flex-col flex-wrap h-3/4">
                     {currentArticles.map((article) => (<>
-                        <li key={article.id} className="mb-2 p-2">
-                            <Link to={`/${article.slug}`} className="text-pink-300 hover:underline">
+                        <Link to={`/${article.slug}`} className="text-gray-300 hover:underline">
+                            <li key={article.id} className="bg-primary/50 m-2 p-2 rounded-md transition duration-300 transform hover:scale-105">
                                 {article.title}
-                            </Link>
-                        </li>
-                        </>
+                            </li>
+                        </Link>
+                    </>
                     ))}
                 </ul>
 
@@ -88,7 +88,7 @@ const AllArticlesPage = () => {
                         <button
                             key={i + 1}
                             onClick={() => paginate(i + 1)}
-                            className={`mx-1 px-3 py-1 rounded-lg ${currentPage === i + 1 ? 'bg-pink-500 text-white' : 'bg-gray-700 text-secondary hover:bg-pink-300'}`}
+                            className={`mx-1 px-3 py-1 rounded-lg ${currentPage === i + 1 ? 'bg-primary text-secondary' : 'bg-gray-700 text-secondary hover:bg-blue-300'}`}
                         >
                             {i + 1}
                         </button>

@@ -1,0 +1,45 @@
+/* Personnalisation du CKEditor pour le thème sombre */
+.ck-editor__editable {
+  min-height: 300px !important;
+  color: black !important;
+}
+
+.ck-editor__editable_inline {
+  padding: 1rem !important;
+}
+
+/* Ajouter des styles pour Quill */
+.ql-editor {
+  min-height: 300px !important;
+  background: white;
+  color: black !important; /* Force la couleur du texte en noir */
+}
+
+.ql-container {
+  font-size: 16px !important;
+}
+
+/* Assurer que la barre d'outils est bien visible */
+.ql-toolbar {
+  background-color: white;
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+}
+
+/* Styles pour les boutons de couleur */
+.ql-color .ql-picker-options,
+.ql-background .ql-picker-options {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.ql-toolbar button:hover,
+.ql-toolbar button:focus {
+  color: #000 !important;
+}
+
+/* Assurer que les icônes de couleur sont visibles */
+.ql-color-picker,
+.ql-background-picker {
+  background-color: white !important;
+}

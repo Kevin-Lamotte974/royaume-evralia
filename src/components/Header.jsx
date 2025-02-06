@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaBars, FaSearch, FaTimes, FaHome, FaMap, FaBookOpen, FaList } from 'react-icons/fa';
+import axiosInstance from '../utils/axiosConfig';
 
 const Header = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [showResults, setShowResults] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const navigate = useNavigate();
     const isLoggedIn = localStorage.getItem('token');
@@ -20,6 +23,47 @@ const Header = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Ajouter un debounce pour la recherche en temps réel
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(async () => {
+            if (searchQuery.trim()) {
+                try {
+                    const response = await axiosInstance.get(`/api/articles/search?q=${searchQuery}`);
+                    setSearchResults(response.data);
+                    setShowResults(true);
+                } catch (error) {
+                    console.error('Erreur de recherche:', error);
+                }
+            } else {
+                setSearchResults([]);
+                setShowResults(false);
+            }
+        }, 300); // Délai de 300ms
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchQuery]);
+
+    // Modifier la fonction handleSearch pour éviter la soumission du formulaire
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchResults.length > 0) {
+            handleSearchClick(searchResults[0].slug);
+        }
+    };
+
+    const handleSearchClick = (slug) => {
+        setSearchQuery('');
+        setShowResults(false);
+        navigate(`/${slug}`);
+    };
+
+    // Fermer les résultats quand on clique ailleurs
+    useEffect(() => {
+        const handleClickOutside = () => setShowResults(false);
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, []);
+
     return (
         <>
             {/* Header fixe */}
@@ -28,8 +72,8 @@ const Header = () => {
                 <div className="container mx-auto px-4">
                     <div className="flex justify-between items-center h-16">
                         {/* Logo */}
-                        <Link to="/" className="flex items-center space-x-2">
-                            <img src="/logo.png" alt="Logo" className="h-8 w-8" />
+                        <Link to="/" className="flex items-center space-x-2 ">
+                            <img src="/logo.png" alt="Logo" className="h-8 w-8 invert" />
                             <span className="font-bold text-xl text-white hidden sm:block">Evralia</span>
                         </Link>
 
@@ -53,21 +97,47 @@ const Header = () => {
                         <div className="flex items-center space-x-4">
                             {/* Barre de recherche */}
                             <div className="hidden md:flex items-center relative">
-                                <input
-                                    type="text"
-                                    placeholder="Rechercher..."
-                                    className="bg-gray-800/80 text-white px-4 py-2 rounded-full w-48 
+                                <form onSubmit={handleSearch} onClick={(e) => e.stopPropagation()}>
+                                    <input
+                                        type="text"
+                                        placeholder="Rechercher..."
+                                        className="bg-gray-800/80 text-white px-4 py-2 rounded-full w-48 
                            focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                                <FaSearch className="absolute right-4 text-gray-400" />
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
+                                    <button 
+                                        type="submit" 
+                                        className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                                        disabled={searchResults.length === 0}
+                                    >
+                                        <FaSearch className={`${searchResults.length === 0 ? 'text-gray-600' : 'text-gray-400'}`} />
+                                    </button>
+                                </form>
+
+                                {/* Résultats de recherche */}
+                                {showResults && searchResults.length > 0 && (
+                                    <div 
+                                        className="absolute top-full left-0 mt-2 w-64 bg-gray-800 rounded-lg shadow-lg overflow-hidden z-50"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        {searchResults.map((result) => (
+                                            <div
+                                                key={result.id}
+                                                className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-white"
+                                                onClick={() => handleSearchClick(result.slug)}
+                                            >
+                                                {result.title}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
 
                             {/* Authentification */}
                             <div className="hidden md:flex items-center space-x-4">
                                 {isLoggedIn && isAdmin && (
-                                    <Link to="/admin" className="hover:text-blue-400">
+                                    <Link to="/admin" className="text-secondary hover:text-blue-400">
                                         Admin
                                     </Link>
                                 )}

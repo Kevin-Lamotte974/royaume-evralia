@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Polygon, Popup, Tooltip } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
+import axiosInstance from '../utils/axiosConfig';
 
 const MapChart = () => {
   const [geoData, setGeoData] = useState(null);
@@ -9,20 +10,52 @@ const MapChart = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   fetch('/evralia2.json')
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       setGeoData(data);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error loading geojson:', error);
+  //       setError(error);
+  //       setLoading(false);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    fetch('/evralia2.geojson')
+    axiosInstance.get('/api/maps/name/Races')
       .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+        console.log('Raw response:', response.data); // Debug log
+        
+        if (!response.data || !response.data.text) {
+          throw new Error('Données manquantes');
         }
-        return response.json();
-      })
-      .then((data) => {
-        setGeoData(data);
-        setLoading(false);
+
+        try {
+          // Un seul parsing du JSON, avec gestion plus claire des erreurs
+          const parsedData = JSON.parse(response.data.text);
+          console.log('Parsed data:', parsedData); // Debug log
+
+          if (!parsedData.features || !Array.isArray(parsedData.features)) {
+            throw new Error('Format GeoJSON invalide');
+          }
+
+          setGeoData(parsedData);
+          setLoading(false);
+        } catch (parseError) {
+          console.error('Parse error:', parseError); // Debug log
+          throw new Error(`Erreur de parsing: ${parseError.message}`);
+        }
       })
       .catch((error) => {
-        console.error('Error loading geojson:', error);
+        console.error('Error details:', error); // Debug log détaillé
         setError(error);
         setLoading(false);
       });
@@ -81,9 +114,9 @@ const MapChart = () => {
             url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=c4T1cTXKzYZ4gBDiZcvW"
             attribution='&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
-          {geoData &&
+          {geoData && geoData.features && // Vérifier explicitement l'existence de features
             geoData.features.map((feature, i) => {
-              if (feature.geometry.type === "Polygon") {
+              if (feature.geometry && feature.geometry.type === "Polygon") {
                 const coordinates = feature.geometry.coordinates[0].map(coord => [coord[1], coord[0]]);
                 const color = getColorByCours(feature.properties.cours);
                 return (

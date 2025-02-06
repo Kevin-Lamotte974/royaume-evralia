@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { DEVB_ROUTE } from '../../routes/Routes';
@@ -9,7 +9,13 @@ const CreateArticle = () => {
 
   const handleSubmit = async (formData) => {
     try {
-      await axios.post(`${DEVB_ROUTE}/api/articles`, formData);
+      const token = localStorage.getItem('token');
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      };
+      await axios.post(`${DEVB_ROUTE}/api/articles`, formData, config);
       navigate('/admin/articles');
     } catch (error) {
       console.error('Erreur lors de la création:', error);

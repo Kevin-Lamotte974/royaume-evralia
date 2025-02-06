@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import TinyMCECustom from '../components/TinyMCECustom';
+import axiosInstance from '../utils/axiosConfig';  // Changer cette ligne
+import RichTextEditor from '../components/RichTextEditor';
 import { DEVB_ROUTE } from '../routes/Routes';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ const AddPage = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get(DEVB_ROUTE + '/api/categories');
+                const response = await axiosInstance.get('/api/categories');  // Utiliser axiosInstance
                 setCategories(response.data);
             } catch (error) {
                 console.error('Erreur lors de la récupération des catégories:', error);
@@ -41,7 +41,7 @@ const AddPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(DEVB_ROUTE + '/api/articles', {
+            const response = await axiosInstance.post('/api/articles', {  // Utiliser axiosInstance
                 title,
                 slug,
                 content,
@@ -95,9 +95,9 @@ const AddPage = () => {
                             Contenu
                         </label>
                         <div className="flex-grow">
-                            <TinyMCECustom
-                                data={content}
-                                onChange={(content) => setContent(content)}
+                            <RichTextEditor
+                                value={content}
+                                onChange={setContent}
                             />
                         </div>
                     </div>

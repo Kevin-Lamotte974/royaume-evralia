@@ -11,8 +11,6 @@ import AllCategoriesPage from './pages/AllCategoriesPage';
 import CategoryPage from './pages/CategoryPage';
 import MapChart from './pages/MapChart';
 import 'leaflet/dist/leaflet.css';
-import KeyboardListener from './utils/KeyboardListener';
-import AdminPanel from './pages/AdminPanel';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -22,6 +20,13 @@ import UserManager from './admin/pages/UserManager';
 import ArticleManager from './admin/pages/ArticleManager';
 import CreateArticle from './admin/pages/CreateArticle';
 import EditArticle from './admin/pages/EditArticle';
+import CreateCategory from './admin/pages/CreateCategory';
+import EditCategory from './admin/pages/EditCategory';
+import './styles/editor.css';
+import Dashboard from './admin/pages/Dashboard';
+import LegalPage from './pages/LegalPage';
+import PrivacyPage from './pages/PrivacyPage';
+import MapManager from './admin/pages/MapManager';
 
 const App = () => {
   const [trait, setTrait] = useState('Neutre');
@@ -38,7 +43,7 @@ const App = () => {
   };
 
   return (
-    <div className={`flex w-screen h-screen ${getBackgroundClass(trait)} bg-center bg-no-repeat bg-cover z-0`}>
+    <div className={`flex flex-col h-min-screen ${getBackgroundClass(trait)} bg-center bg-no-repeat bg-cover z-0 prose`}>
       <BrowserRouter>
         <Routes>
           {/* Routes Admin */}
@@ -46,12 +51,15 @@ const App = () => {
             <ProtectedRoute>
               <AdminLayout>
                 <Routes>
-                  <Route index element={<AdminPanel />} />
+                  <Route index element={<Dashboard />} />
                   <Route path="articles" element={<ArticleManager />} />
                   <Route path="articles/new" element={<CreateArticle />} />
                   <Route path="articles/edit/:id" element={<EditArticle />} />
                   <Route path="categories" element={<CategoryManager />} />
+                  <Route path="categories/new" element={<CreateCategory />} />
+                  <Route path="categories/edit/:id" element={<EditCategory />} />
                   <Route path="users" element={<UserManager />} />
+                  <Route path="maps" element={<MapManager />} />
                 </Routes>
               </AdminLayout>
             </ProtectedRoute>
@@ -61,7 +69,7 @@ const App = () => {
           <Route path="/*" element={
             <>
               <Header />
-              <main className="flex flex-col w-full pt-16">
+              <main className="flex flex-col w-full h-screen pt-16">
                 <Routes>
                   <Route path="/" element={<Navigate to="/evralia" />} />
                   <Route path="/map" element={<MapChart />} />
@@ -85,6 +93,8 @@ const App = () => {
                   <Route path="/categories/:id" element={<CategoryPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/legal" element={<LegalPage />} />
+                  <Route path="/privacy" element={<PrivacyPage />} />
                   <Route path="/:slug" element={<HomePage setTrait={setTrait} />} />
                 </Routes>
               </main>

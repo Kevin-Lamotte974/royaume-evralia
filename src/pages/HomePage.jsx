@@ -4,9 +4,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Error404 from './Error404';
 import PasswordPrompt from './PasswordPrompt';
 import { getPassword } from '../utils/password';
-import { addFavorite, removeFavorite, isFavorite } from '../utils/favorites';
-import { FaEdit, FaStar, FaTrash } from "react-icons/fa";
 import { DEVB_ROUTE } from '../routes/Routes';
+import Loading from '../components/Loading';
+import { delay } from '../utils/delay';
+import Comments from '../components/Comments';
+import { FaComment } from "react-icons/fa";  // Remplacer FaStar par FaComment
 
 const HomePage = ({ setTrait }) => {
     const { slug } = useParams();
@@ -16,21 +18,24 @@ const HomePage = ({ setTrait }) => {
     const [action, setAction] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [isFav, setIsFav] = useState(false);
+    const [showComments, setShowComments] = useState(false);  // Ajouter cet état
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deletePassword, setDeletePassword] = useState(''); // State for password input
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchArticle = async () => {
             try {
+                await delay(); // Ajoute un délai de 1 seconde
                 const slug_to_fetch = slug || 'evralia';
                 const response = await axios.get(DEVB_ROUTE + `/api/articles/${slug_to_fetch}`);
                 setContent(response.data);
                 setTrait(response.data.trait);
-                setIsFav(isFavorite(response.data.id));
             } catch (err) {
                 setError('Article non trouvé');
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -45,7 +50,6 @@ const HomePage = ({ setTrait }) => {
                     const response = await axios.get(DEVB_ROUTE + `/api/articles/${slug}`);
                     setContent(response.data);
                     setTrait(response.data.trait);
-                    setIsFav(isFavorite(response.data.id));
                 } catch (err) {
                     setError('Article non trouvé');
                 }
@@ -55,82 +59,7 @@ const HomePage = ({ setTrait }) => {
         }
     }, [navigate.state?.updated, slug]);
 
-    const handleAddPage = () => {
-        if (getPassword()) {
-            navigate('/add-page');
-        } else {
-            setAction('add');
-            setShowPasswordPrompt(true);
-        }
-    };
-
-    const handleEditPage = () => {
-        if (getPassword()) {
-            navigate(`/edit/${slug}`);
-        } else {
-            setAction('edit');
-            setShowPasswordPrompt(true);
-        }
-    };
-
-    const handleFavoritePage = () => {
-        if (content) {
-            if (isFav) {
-                removeFavorite(content.id);
-            } else {
-                addFavorite(content);
-            }
-            setIsFav(!isFav);
-        }
-    };
-
-    const handleDeletePage = () => {
-        setShowDeleteModal(true); // Show delete modal
-    };
-
-    const confirmDelete = async () => {
-        if (deletePassword !== getPassword()) {
-            setError('Mot de passe incorrect');
-            return;
-        }
-        try {
-            await axios.delete(DEVB_ROUTE + `/api/articles/${slug}`);
-            setShowDeleteModal(false);
-            navigate('/');
-        } catch (err) {
-            console.error('Erreur lors de la suppression de la page:', err);
-            setError('Erreur lors de la suppression de la page');
-        }
-    };
-
-    const onPasswordSet = () => {
-        setShowPasswordPrompt(false);
-        if (action === 'add') {
-            navigate('/add-page');
-        } else if (action === 'edit') {
-            navigate(`/edit/${slug}`);
-        }
-    };
-
-    const onClosePasswordPrompt = () => {
-        setShowPasswordPrompt(false);
-    };
-
-    const handleSearch = async (e) => {
-        const query = e.target.value;
-        setSearchQuery(query);
-
-        if (query.length > 0) {
-            try {
-                const response = await axios.get(DEVB_ROUTE + `/api/articles/sb/search?q=${query}`);
-                setSearchResults(response.data);
-            } catch (err) {
-                console.error('Erreur lors de la recherche:', err);
-            }
-        } else {
-            setSearchResults([]);
-        }
-    };
+    if (loading) return <Loading />;
 
     if (error) {
         return <Error404 />;
@@ -139,61 +68,22 @@ const HomePage = ({ setTrait }) => {
     return (
         <>
             {slug && (
-                <div className="flex flex-col h-full items-center justify-center p-4">
-                    <div className="flex flex-col relative bg-gray-900 w-3/4 h-4/5 p-4 rounded-lg text-secondary z-30">
-                        <div className="absolute right-2 top-2 space-x-2">
-                            <button onClick={handleDeletePage} className="bg-red-500 hover:bg-red-700 text-white font-bold p-4 rounded">
-                                <FaTrash />
-                            </button>
-                            <button onClick={handleEditPage} className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-4 rounded">
-                                <FaEdit />
-                            </button>
+                <div className="flex flex-row h-full items-center justify-center p-4">
+                    <div className="flex flex-col relative bg-gradient-to-r from-gray-900 via-blue-950 to-gray-700 w-3/4 h-4/5 p-6 rounded-xl shadow-2xl text-white z-30">
+                        <div className="absolute right-4 top-4">
                             <button
-                                onClick={handleFavoritePage}
-                                className={`p-4 rounded ${isFav ? 'bg-red-500 hover:bg-red-700' : 'bg-yellow-500 hover:bg-yellow-700'} text-white font-bold`}
+                                onClick={() => setShowComments(!showComments)}
+                                className="p-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition duration-300 transform hover:scale-105"
                             >
-                                <FaStar />
+                                <FaComment />
                             </button>
                         </div>
-                        <h1 className="text-4xl font-bold mb-4">{content?.title}</h1>
-                        <p className="text-xl mb-2">Category: {content?.categoryName}</p>
-                        <div className="custom-content overflow-y-auto max-h-full" dangerouslySetInnerHTML={{ __html: content?.content }} />
+                        <h1 className="text-5xl font-extrabold mb-6">{content?.title}</h1>
+                        <p className="text-2xl font-medium mb-4">{content?.categoryName}</p>
+                        <div className="custom-content overflow-y-auto max-h-full text-lg leading-relaxed text-gray-200" dangerouslySetInnerHTML={{ __html: content?.content }} />
                     </div>
-                </div>
-            )}
 
-            {showPasswordPrompt && (
-                <PasswordPrompt onPasswordSet={onPasswordSet} onClose={onClosePasswordPrompt} />
-            )}
-
-            {showDeleteModal && (
-                <div
-                    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-                    onClick={() => setShowDeleteModal(false)} // Hide modal on outside click
-                >
-                    <div
-                        className="bg-gray-800 p-8 rounded shadow-md text-center text-secondary"
-                        onClick={(e) => e.stopPropagation()} // Prevent modal from closing when clicking inside
-                    >
-                        <h2 className="text-2xl mb-4">Confirmer la suppression</h2>
-                        <p className="mb-4">Êtes-vous sûr de vouloir supprimer cet article ?</p>
-                        <input
-                            type="password"
-                            placeholder="Entrez le mot de passe"
-                            value={deletePassword}
-                            onChange={(e) => setDeletePassword(e.target.value)}
-                            className="mb-4 p-2 rounded bg-gray-900 text-white"
-                        />
-                        {error && <p className="text-red-500">{error}</p>}
-                        <div className="space-x-4">
-                            <button onClick={confirmDelete} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                Oui, supprimer
-                            </button>
-                            <button onClick={() => setShowDeleteModal(false)} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                                Annuler
-                            </button>
-                        </div>
-                    </div>
+                    {showComments && <Comments articleId={content?.id} />}
                 </div>
             )}
         </>

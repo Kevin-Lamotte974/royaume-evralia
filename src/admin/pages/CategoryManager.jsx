@@ -3,6 +3,8 @@ import axios from 'axios';
 import { DEVB_ROUTE } from '../../routes/Routes';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import Loading from '../../components/Loading';
+import { delay } from '../../utils/delay';
 
 const CategoryManager = () => {
   const [categories, setCategories] = useState([]);
@@ -14,11 +16,12 @@ const CategoryManager = () => {
 
   const fetchCategories = async () => {
     try {
+      await delay(); // Ajoute un délai de 1 seconde
       const response = await axios.get(`${DEVB_ROUTE}/api/categories`);
       setCategories(response.data);
-      setLoading(false);
     } catch (error) {
       console.error('Erreur lors de la récupération des catégories:', error);
+    } finally {
       setLoading(false);
     }
   };
@@ -34,7 +37,7 @@ const CategoryManager = () => {
     }
   };
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading) return <Loading />;
 
   return (
     <div className="p-6">
@@ -42,7 +45,7 @@ const CategoryManager = () => {
         <h1 className="text-3xl font-bold">Gestion des Catégories</h1>
         <Link
           to="/admin/categories/new"
-          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex items-center"
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center"
         >
           <FaPlus className="mr-2" /> Nouvelle Catégorie
         </Link>
@@ -62,10 +65,10 @@ const CategoryManager = () => {
               <tr key={category.id}>
                 <td className="px-6 py-4 whitespace-nowrap">{category.name}</td>
                 <td className="px-6 py-4">{category.description}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td className="px-6 py-4 flex justify-end space-x-2">
                   <Link
                     to={`/admin/categories/edit/${category.id}`}
-                    className="text-blue-600 hover:text-blue-900 mr-4"
+                    className="text-blue-600 hover:text-blue-900"
                   >
                     <FaEdit />
                   </Link>

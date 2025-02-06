@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaNewspaper, FaFolderOpen, FaUsers } from 'react-icons/fa';
+import { FaHome, FaNewspaper, FaFolderOpen, FaUsers, FaMap } from 'react-icons/fa';
 
 const AdminSidebar = () => {
   const location = useLocation();
@@ -51,8 +51,19 @@ const AdminSidebar = () => {
               <FaUsers /> <span>Utilisateurs</span>
             </Link>
           </li>
+          <li>
+            <Link
+              to="/admin/maps"
+              className={`flex items-center space-x-2 p-2 rounded-lg ${
+                isActive('/admin/maps') ? 'bg-blue-600' : 'hover:bg-gray-700'
+              }`}
+            >
+              <FaMap /> <span>Cartes</span>
+            </Link>
+          </li>
         </ul>
       </nav>
+      <img src="/logo.png" alt="Logo" className="absolute bottom-24 left-8 h-48 w-48 invert" />
     </aside>
   );
 };
